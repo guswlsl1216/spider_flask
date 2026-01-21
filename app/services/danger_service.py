@@ -5,8 +5,8 @@
 class DangerService:
   # 상수 정의
   # 위험 점수 기준(ML 예측 기반 danger_score를 상태로 변환할 때 사용)
-  EMERGENCY_TH = 70   # 이 이상이면 설비 작동 중지(STOP)
-  WARNING_TH = 40     # 이 이상이면 경고(WARNING)
+  EMERGENCY_TH = 70   # 이 이상이면 설비 작동 위험(STOP)
+  WARNING_TH = 60    # 이 이상이면 경고(WARNING)
 
   # 센서별 임계치(실측 센서값 기준으로 어떤 센서가 "주 원인"인지 고를 때 사용)
   TEMP_LIMIT = 45  # 온도

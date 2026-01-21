@@ -37,7 +37,7 @@ def create_app():
   
   from .blueprints.sensormodel import bp as sensormodel_bp
 
-  app.mqtt_client = init_mqtt(app)
+  # app.mqtt_client = init_mqtt(app)
   
   # === blueprints ===
   from .blueprints.camera import bp as camera_bp

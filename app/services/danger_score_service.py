@@ -8,31 +8,32 @@ logger = logging.getLogger(__name__)
 
 class DangerScoreService:
   @staticmethod
-  def save_danger_score(machine_number: int, danger_score: float | None = None) -> DangerScore:
-    """
-      위험 점수를 danger_score 테이블에 저장한다.
+  def save_danger_score(machine_number: int, danger_score: float | None = None) -> DangerScore | None:
+          """
+          위험 점수를 danger_score 테이블에 저장한다.
+          (DB 서버 연결 실패 시에도 시뮬레이션을 중단하지 않음)
+          """
+          if danger_score is None:
+              return None
 
-      Args:
-        machine_number (int): 설비(호기) 번호
-        danger_score (float): 계산된 위험 점수
+          try:
+              # 원본 저장 로직 유지
+              row = DangerScore(
+                  machine_number=machine_number,
+                  dangerScore=float(danger_score)
+              )
 
-      Returns:
-        DangerScore: 저장된 ORM 객체
-    """
-    try:
-      # 모델 필드명에 맞춰 넣어야 함
-      row = DangerScore(
-        machine_number=machine_number,
-        dangerScore = float(danger_score)
-      )
-
-      db.session.add(row)
-      db.session.commit()
-      return row
-    except Exception as e:
-      db.session.rollback()
-      logger.error(f"[Machine {machine_number}] 위험점수 저장 실패: {e}", exc_info=True)
-      return None
+              db.session.add(row)
+              db.session.commit()
+              return row
+              
+          except Exception as e:
+              # 1. 에러 시 롤백 (세션 상태 초기화)
+              db.session.rollback()
+              # 2. 로그 기록 (에러 원인 파악용)
+              logger.error(f"[Machine {machine_number}] 위험점수 저장 실패(DB 연결 확인 필요): {e}")
+              # 3. None 반환 (호출한 곳에서 저장 실패를 인지할 수 있게 함)
+              return None
 
   @staticmethod
   def load_danger_score(machine_number):

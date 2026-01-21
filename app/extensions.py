@@ -8,7 +8,7 @@ import joblib
 from flask_socketio import SocketIO
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(BASE_DIR, 'sensor_lstm_model_v2.keras')
+model_path = os.path.join(BASE_DIR, 'spider_lstm_model.keras')
 scaler_x_path = os.path.join(BASE_DIR, 'scaler_X.pkl')
 scaler_y_path = os.path.join(BASE_DIR, 'scaler_y.pkl')
 socketio = SocketIO(cors_allowed_origins="*", async_mode="threading")
